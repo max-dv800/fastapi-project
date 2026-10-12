@@ -69,8 +69,8 @@ HMAC_KEY = jdie451f211c566s2s2d777fdqa
 ### Быстрый старт через Docker Compose
 
 ```bash
-git clone https://github.com/max-dv800/Event-booking.git
-cd Event-booking
+git clone https://github.com/max-dv800/fastapi-project.git
+cd fastapi-project
 docker-compose up --build
 
 
