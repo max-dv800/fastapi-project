@@ -1,0 +1,103 @@
+services:
+  rabbitmq:
+    image: rabbitmq:3.13-management
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "-q", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 15s
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    networks:
+      - celery_net
+  
+
+  redis:
+    image: redis:latest
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+      start_period: 10s
+    ports:
+      - "6379:6379"
+    networks:
+      - celery_net
+    
+  
+  postgres:
+    image: postgres:18-alpine
+    environment:
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASS}
+      POSTGRES_DB: ${DB_NAME}
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "${DB_USER}"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+      start_period: 10s
+    ports:
+      - "5432:5432"
+    networks:
+      - celery_net
+
+  migrations:
+    build: .
+    command: alembic upgrade head
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - celery_net
+
+  worker:
+    build: .
+    command: celery -A app.tasks.celery_config worker -l info
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      migrations:
+        condition: service_completed_successfully
+    networks:
+      - celery_net
+
+
+  celery_beat:
+    build: .
+    command: celery -A app.tasks.celery_config beat -l info
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - celery_net
+  
+  
+  web:
+    build: .
+    ports:
+      - "8000:8000"
+    depends_on:
+      redis:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_started  
+      migrations:
+        condition: service_completed_successfully
+    networks:
+      - celery_net
+
+
+networks:
+    celery_net:
+      driver: bridge
+      
+
+

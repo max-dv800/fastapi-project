@@ -1,0 +1,10 @@
+/.coverage
+/.env
+/.mypy_cache
+/.pytest.env
+/.pytest_cache
+/.ruff_cache
+/.venv
+/.vscode
+/__pycache__
+/celerybeat-schedule
