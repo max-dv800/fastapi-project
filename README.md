@@ -33,31 +33,7 @@
 
 ## ⚙️ Переменные окружения (.env)
 
-Для конфигурации приложения создайте файл `.env` в корне проекта. Пример заполнения:
-
-```env
-SECRET_KEY = ire634*&6%^%451r2ewf1244g54345&@>??<fERGGJKfjij478fd4h56fj4j12fgh1b0v02g
-DB_HOST = localhost #postgres - для запуска через docker-compose
-DB_PORT = 5432
-DB_USER = postgres
-DB_PASS = password
-DB_NAME = db_project
-ACCESS_MAX_AGE = 900
-REFRESH_MAX_AGE = 604800
-EMAIL_HOST = smtp.yandex.ru
-EMAIL_PORT = 465
-EMAIL_USERNAME = user
-EMAIL_PASSWORD = password
-REDIS_HOST = 127.0.0.1 #redis - для запуска через docker-compose
-REDIS_PORT = 6379
-REDIS_DB = 0
-FRONTEND_URL = http://127.0.0.1:8000/api/v1
-RABBIT_HOST = 127.0.0.1 #rabbitmq - для запуска через docker-compose
-RABBIT_USER = guest
-RABBIT_PASS = guest
-RABBIT_PORT = 5672
-HMAC_KEY = jdie451f211c566s2s2d777fdqa
-```
+Для конфигурации приложения создайте файл `.env` в корне проекта. 
 
 ## 📦 Установка и запуск
 
