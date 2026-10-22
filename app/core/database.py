@@ -23,14 +23,8 @@ SessionLocalCelery = sessionmaker(
 
 async def db_session():
     async with AsyncSessionLocal() as session:
-        try:
             yield session
-        finally:
-            await session.rollback()
 
 def db_celery_session():
     with SessionLocalCelery() as session:
-        try:
             yield session
-        finally:
-            session.rollback()
