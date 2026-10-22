@@ -75,11 +75,7 @@ async def test_db():
 @pytest.fixture
 async def test_session(test_db):
     async with TestAsyncSession() as db:
-        try:
             yield db
-        finally:
-            await db.close()
-            await db.rollback()
 
 
 @pytest.fixture
