@@ -66,7 +66,7 @@ def create_refresh_token(user):
 
 def token_verify(token: str, expected: str) -> dict:
     try:
-        data = jwt.decode(token, settings.SECRET_KEY, algorithms="HS256")
+        data = jwt.decode(token, settings.SECRET_KEY, algorithms=["HS256"])
         if data.get("type") != expected:
             raise HTTPException(
                 status_code=status.HTTP_403_FORBIDDEN, detail="Invalid type token!"
